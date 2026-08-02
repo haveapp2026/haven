@@ -43,6 +43,9 @@ import com.bitchat.android.ui.ChatScreen
 import com.bitchat.android.ui.ChatViewModel
 import com.bitchat.android.ui.OrientationAwareActivity
 import com.bitchat.android.ui.theme.BitchatTheme
+import com.bitchat.android.haven.NotesScreen
+import com.bitchat.android.haven.WipeConfirmScreen
+import com.bitchat.android.haven.DuressManager
 import com.bitchat.android.wifiaware.WifiAwareController
 import com.bitchat.android.nostr.PoWPreferenceManager
 import com.bitchat.android.services.VerificationService
@@ -156,14 +159,33 @@ class MainActivity : OrientationAwareActivity() {
         
         setContent {
             BitchatTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    containerColor = MaterialTheme.colorScheme.background
-                ) { innerPadding ->
-                    OnboardingFlowScreen(modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding)
-                    )
+                // Haven gate: show Notes disguise first, unlock with PIN
+                var havenUnlocked by remember { mutableStateOf(false) }
+                var showWipeConfirm by remember { mutableStateOf(false) }
+
+                // Register shake-to-wipe sensor
+                DisposableEffect(Unit) {
+                    val pair = DuressManager.registerShakeListener(this@MainActivity) {
+                        havenUnlocked = false
+                        showWipeConfirm = true
+                    }
+                    onDispose {
+                        pair?.first?.unregisterListener(pair.second)
+                    }
+                }
+
+                when {
+                    showWipeConfirm -> WipeConfirmScreen(onDismiss = { showWipeConfirm = false })
+                    !havenUnlocked -> NotesScreen(onUnlocked = { havenUnlocked = true })
+                    else -> Scaffold(
+                        modifier = Modifier.fillMaxSize(),
+                        containerColor = MaterialTheme.colorScheme.background
+                    ) { innerPadding ->
+                        OnboardingFlowScreen(modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
+                        )
+                    }
                 }
             }
         }
