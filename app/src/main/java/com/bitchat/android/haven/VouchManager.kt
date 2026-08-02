@@ -6,31 +6,35 @@ import android.util.Log
 object VouchManager {
 
     private const val TAG = "VouchManager"
+    private const val PREFS = "haven_vouch"
+    private const val KEY = "vouched_fingerprints"
 
-    // Called when user scans another peer's QR code - vouches for them
-    fun vouchForPeer(context: Context, peerFingerprint: String) {
-        HavenPreferences.addVouchedFingerprint(context, peerFingerprint)
-        Log.i(TAG, "Vouched for peer: ${peerFingerprint.take(8)}...")
+    fun vouchForPeer(context: Context, fingerprint: String) {
+        val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        val existing = prefs.getString(KEY, "") ?: ""
+        val set = existing.split(",").filter { it.isNotBlank() }.toMutableSet()
+        set.add(fingerprint)
+        prefs.edit().putString(KEY, set.joinToString(",")).apply()
+        Log.i(TAG, "Vouched: ${fingerprint.take(8)}")
     }
 
-    // Returns true if a peer is vouched and allowed to broadcast
-    fun isVouched(context: Context, peerFingerprint: String): Boolean {
-        return HavenPreferences.getVouchedFingerprints(context).contains(peerFingerprint)
+    fun isVouched(context: Context, fingerprint: String): Boolean {
+        val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        val raw = prefs.getString(KEY, "") ?: ""
+        return raw.split(",").contains(fingerprint)
     }
 
-    // Returns all vouched fingerprints
     fun getVouchedPeers(context: Context): Set<String> {
-        return HavenPreferences.getVouchedFingerprints(context)
+        val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        val raw = prefs.getString(KEY, "") ?: ""
+        return raw.split(",").filter { it.isNotBlank() }.toSet()
     }
 
-    // Remove a vouched peer (ban)
-    fun revokeVouch(context: Context, peerFingerprint: String) {
-        val current = HavenPreferences.getVouchedFingerprints(context).toMutableSet()
-        current.remove(peerFingerprint)
-        // Re-save the updated set
-        val prefs = context.getSharedPreferences("haven_vouch_temp", Context.MODE_PRIVATE)
-        // Delegate back through HavenPreferences for encrypted storage
-        current.forEach { HavenPreferences.addVouchedFingerprint(context, it) }
-        Log.i(TAG, "Revoked vouch for: ${peerFingerprint.take(8)}...")
+    fun revokeVouch(context: Context, fingerprint: String) {
+        val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        val raw = prefs.getString(KEY, "") ?: ""
+        val updated = raw.split(",").filter { it.isNotBlank() && it != fingerprint }
+        prefs.edit().putString(KEY, updated.joinToString(",")).apply()
+        Log.i(TAG, "Revoked: ${fingerprint.take(8)}")
     }
 }
