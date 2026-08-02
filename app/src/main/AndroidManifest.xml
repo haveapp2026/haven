@@ -84,7 +84,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.BitchatAndroid"
+        android:theme="@style/Theme.HavenApp"
         tools:targetApi="33">
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
@@ -108,13 +108,13 @@
         <activity
             android:name=".ui.GeohashPickerActivity"
             android:exported="false"
-            android:theme="@style/Theme.BitchatAndroid"
+            android:theme="@style/Theme.HavenApp"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.BitchatAndroid"
+            android:theme="@style/Theme.HavenApp"
             android:windowSoftInputMode="adjustResize"
             android:launchMode="singleTop">
             <intent-filter>
@@ -157,8 +157,8 @@
         <activity
             android:name=".hotspot.HotspotActivity"
             android:exported="false"
-            android:label="Share BitChat"
-            android:theme="@style/Theme.BitchatAndroid"
+            android:label="Share Haven"
+            android:theme="@style/Theme.HavenApp"
             android:launchMode="singleTop" />
 
         <!-- Declare the foreground service type for WorkManager's foreground

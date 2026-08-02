@@ -27,11 +27,11 @@ android {
     buildToolsVersion = libs.versions.buildTools.get()
 
     defaultConfig {
-        applicationId = "com.bitchat.droid"
+        applicationId = "com.haven.mesh"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 36
-        versionName = "1.7.5"
+        versionCode = 1
+        versionName = "0.1.0"
         buildConfigField(
             "String",
             "GITHUB_RELEASE_CERT_SHA256",
