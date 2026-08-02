@@ -86,6 +86,10 @@
   <string name="offline_reachable_via_nostr">Offline from mesh · Nostr available</string>
   <string name="delete">Delete</string>
   <string name="delete_conversation_action">Delete conversation</string>
+  <string name="rename_contact">Rename contact</string>
+  <string name="rename_contact_title">Name this contact</string>
+  <string name="rename_contact_hint">Display name</string>
+  <string name="rename_contact_save">Save</string>
   <string name="delete_conversation_title">Delete conversation?</string>
   <string name="delete_conversation_message">Delete your conversation with %1$s from this device?</string>
   <string name="search_conversations">Search conversations</string>
@@ -152,7 +156,7 @@
   <string name="cd_pick_file">Pick file</string>
 
   <!-- About sheet -->
-  <string name="about_tagline">The sidegroup chat</string>
+  <string name="about_tagline">Mesh chat. No internet. No trace.</string>
 
   <!-- About sheet: tabs -->
   <string name="about_tab_info">Info</string>
@@ -496,7 +500,7 @@
   <string name="location_needs_bullets">• Bluetooth device scanning\n• Discovering nearby users on mesh network\n• Geohash chat feature\n• No tracking or location collection</string>
   <string name="background_location_required_title">Background Location Recommended</string>
   <string name="background_location_required_subtitle">Optional, improves mesh reliability</string>
-  <string name="background_location_explanation">Android recommends background location so bitchat can scan for nearby devices while the app is not open. This keeps the mesh alive after reboot.</string>
+  <string name="background_location_explanation">Android recommends background location so Haven can scan for nearby devices while the app is not open. This keeps the mesh alive after reboot.</string>
   <string name="background_location_settings_tip">When settings opens, choose "Allow all the time".</string>
   <string name="background_location_needs_for">Haven uses background location for:</string>
   <string name="background_location_needs_bullets">- Scan for nearby devices while the app is closed\n- Reconnect after reboot\n- Keep the mesh running in the background</string>
@@ -513,7 +517,7 @@
   <string name="bluetooth_needs_bullets">• Discover nearby users\n• Create mesh network connections\n• Send and receive messages\n• Work without internet or servers</string>
   <string name="enable_bluetooth">Enable Bluetooth</string>
   <string name="bluetooth_not_supported">Bluetooth Not Supported</string>
-  <string name="bluetooth_unsupported_explanation">This device doesn\'t support Bluetooth Low Energy (BLE), which is required for bitchat to function.\n\nHaven needs BLE to create mesh networks and communicate with nearby devices without internet.</string>
+  <string name="bluetooth_unsupported_explanation">This device doesn\'t support Bluetooth Low Energy (BLE), which is required for Haven to function.\n\nHaven needs BLE to create mesh networks and communicate with nearby devices without internet.</string>
   <string name="checking_bluetooth_status">Checking Bluetooth status...</string>
   <string name="battery_optimization_detected_title">Battery optimization detected</string>
   <string name="battery_optimization_enabled_title">Battery Optimization Enabled</string>
@@ -574,16 +578,16 @@
   <string name="cd_pause_voice">Pause</string>
 
   <!-- Permission descriptions -->
-  <string name="perm_nearby_devices_desc">Required to discover bitchat users via Bluetooth</string>
-  <string name="perm_nearby_devices_system">Allow bitchat to connect to nearby devices</string>
-  <string name="perm_location_desc">Required by Android to discover nearby bitchat users via Bluetooth</string>
+  <string name="perm_nearby_devices_desc">Required to discover Haven users via Bluetooth</string>
+  <string name="perm_nearby_devices_system">Allow Haven to connect to nearby devices</string>
+  <string name="perm_location_desc">Required by Android to discover nearby Haven users via Bluetooth</string>
   <string name="perm_location_system">Haven needs this to scan for nearby devices</string>
   <string name="perm_background_location_desc">Recommended to scan for nearby devices while the app is in the background</string>
   <string name="perm_background_location_system">Allow background location access</string>
   <string name="perm_notifications_desc">Receive notifications when you receive private messages</string>
-  <string name="perm_notifications_system">Allow bitchat to send you notifications</string>
+  <string name="perm_notifications_system">Allow Haven to send you notifications</string>
   <string name="perm_battery_desc">Disable battery optimization to ensure Haven runs reliably in the background and maintains mesh network connections</string>
-  <string name="perm_battery_system">Allow bitchat to run without battery restrictions</string>
+  <string name="perm_battery_system">Allow Haven to run without battery restrictions</string>
 
   <!-- Permission types -->
   <string name="perm_type_nearby_devices">Nearby Devices</string>

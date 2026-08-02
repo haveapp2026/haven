@@ -42,6 +42,7 @@ import com.bitchat.android.util.hexEncodedString
 import com.bitchat.android.features.voice.LiveVoicePreferences
 import com.bitchat.android.features.voice.LiveVoiceTarget
 import com.bitchat.android.features.voice.VoiceRecorder
+import com.bitchat.android.haven.ContactBook
 
 private data class ConversationLiveIdentityState(
     val connectedPeerIDs: List<String>,
@@ -320,12 +321,16 @@ class ChatViewModel(
                 .mapNotNull(liveIdentity.persistedDisplayNames::get)
                 .firstOrNull()
 
+            val contactBookName = resolution.noiseKeyHex?.let { fp ->
+                ContactBook.getName(getApplication<Application>().applicationContext, fp)
+            }
+
             summary.copy(
                 displayName = resolveConversationDisplayName(
                     fallbackName = summary.displayName,
                     connectedPeerID = connectedPeerID,
                     peerNicknames = liveIdentity.peerNicknames,
-                    resolvedContactName = resolution.displayName,
+                    resolvedContactName = contactBookName ?: resolution.displayName,
                     persistedDisplayName = persistedDisplayName
                 ),
                 nostrPubkey = resolvedNostrPubkey,

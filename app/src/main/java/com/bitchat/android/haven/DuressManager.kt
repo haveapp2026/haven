@@ -16,21 +16,22 @@ object DuressManager {
     private var shakeCount = 0
     private var lastShakeTime = 0L
 
-    // Deletes all Haven message/chat data, leaves decoy notes intact
+    // Deletes all Haven message/chat data
     fun wipeRealData(context: Context) {
         try {
-            // Clear the BitChat identity and message stores
             val prefsToWipe = listOf(
                 "bitchat_identity",
                 "bitchat_messages",
                 "bitchat_channels",
                 "bitchat_favorites",
-                "bitchat_peers"
+                "bitchat_peers",
+                "haven_vouch"
             )
             prefsToWipe.forEach { name ->
                 context.getSharedPreferences(name, Context.MODE_PRIVATE)
                     .edit().clear().apply()
             }
+            ContactBook.wipeAll(context)
             Log.i(TAG, "Real data wiped")
         } catch (e: Exception) {
             Log.e(TAG, "Wipe failed", e)

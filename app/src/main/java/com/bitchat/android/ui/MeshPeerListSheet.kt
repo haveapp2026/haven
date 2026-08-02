@@ -71,6 +71,7 @@ import com.bitchat.android.nostr.GeohashConversationRegistry
 import com.bitchat.android.services.ContactDirectory
 import com.bitchat.android.services.ContactIdentityResolver
 import com.bitchat.android.util.hexEncodedString
+import com.bitchat.android.haven.ContactBook
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
 
@@ -1097,6 +1098,7 @@ private fun ConversationSwipeItem(
                     theyFavoritedUs = theyFavoritedUs,
                     isVerified = isVerified,
                     deleteDescription = deleteDescription,
+                    fingerprint = fingerprint,
                     onClick = { onPrivateChatStart(conversation.conversationID) },
                     onTogglePinned = {
                         viewModel.toggleConversationPinned(conversation.conversationID)
@@ -1124,6 +1126,7 @@ private fun ConversationRow(
     theyFavoritedUs: Boolean,
     isVerified: Boolean,
     deleteDescription: String,
+    fingerprint: String?,
     onClick: () -> Unit,
     onTogglePinned: () -> Unit,
     onToggleMuted: () -> Unit,
@@ -1132,7 +1135,10 @@ private fun ConversationRow(
 ) {
     val palette = LocalBitchatPalette.current
     val colorScheme = MaterialTheme.colorScheme
+    val context = LocalContext.current
     var showActions by remember { mutableStateOf(false) }
+    var showRenameDialog by remember { mutableStateOf(false) }
+    var renameInput by remember { mutableStateOf("") }
     val liveIdentityIDs = conversation.identityAliases +
         listOfNotNull(conversation.connectedPeerID?.lowercase())
     val isWifiAware = liveIdentityIDs.any(wifiAwareIdentityIDs::contains)
@@ -1424,6 +1430,19 @@ private fun ConversationRow(
                         onReadStateRequested()
                     }
                 )
+                if (fingerprint != null) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.rename_contact)) },
+                        leadingIcon = {
+                            Icon(Icons.Outlined.Edit, contentDescription = null)
+                        },
+                        onClick = {
+                            showActions = false
+                            renameInput = ContactBook.getName(context, fingerprint) ?: ""
+                            showRenameDialog = true
+                        }
+                    )
+                }
                 DropdownMenuItem(
                     text = {
                         Text(
@@ -1444,6 +1463,34 @@ private fun ConversationRow(
                     }
                 )
             }
+        }
+
+        if (showRenameDialog && fingerprint != null) {
+            AlertDialog(
+                onDismissRequest = { showRenameDialog = false },
+                title = { Text(stringResource(R.string.rename_contact_title)) },
+                text = {
+                    OutlinedTextField(
+                        value = renameInput,
+                        onValueChange = { renameInput = it },
+                        label = { Text(stringResource(R.string.rename_contact_hint)) },
+                        singleLine = true
+                    )
+                },
+                confirmButton = {
+                    TextButton(onClick = {
+                        ContactBook.setName(context, fingerprint, renameInput)
+                        showRenameDialog = false
+                    }) {
+                        Text(stringResource(R.string.rename_contact_save))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showRenameDialog = false }) {
+                        Text(stringResource(R.string.cancel_lower))
+                    }
+                }
+            )
         }
     }
 }
